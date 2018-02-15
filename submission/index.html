@@ -1,0 +1,503 @@
+<html>
+<head>
+<title>Project 0</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<!--Put your D3 import statement between these two lines-->
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+<!--Put your D3 import statement between these two lines-->
+    
+    <style type="text/css">
+        body {
+            font-family: fantasy;
+            font-size: 14px;
+            background-image: url("backg1.jpg");
+            background-size: cover;
+        }
+        #partOne{
+            color: whitesmoke;
+        }
+        p,h1,h3{
+            color: whitesmoke;
+        }
+        .point {
+            fill: #f00; 
+            stroke: #000;
+        }
+
+        .label {
+            text-anchor: middle;
+            font-size: px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .line {
+              fill: none;
+              stroke: yellow;
+              stroke-width: 2px;
+        }
+        .axisWhite{
+            fill: white;
+        }
+        .axisWhite text{
+            fill:white;
+        }
+        #anscombe1,#anscombe2,#anscombe3,#anscombe4,#partTwo,#partThree,#barchartvertBell,#barcharthorBell{
+            width: 600px;
+        }
+        .Tooltip{	
+            position: absolute;			
+            text-align: left;								
+            padding: 5px;					
+            background: yellow;
+            border-radius: 6px;
+        }
+        .btn {
+            background-color: #FFFFFF;
+            color: black;
+            padding: 10px;
+            font-size: 14px;
+            font-family: fantasy;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover, .dropbtn:focus {
+            background-color: #FFFFFF;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #FFFFFF;
+            min-width: 160px;
+            overflow: auto;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown a:hover {background-color: #ddd}
+
+        .show {display:block;}
+        
+    </style>
+    <script>
+        function showOptions() {
+            document.getElementById("dropdown").classList.toggle("show");
+        }
+        window.onclick = function(event) {
+          if (!event.target.matches('.btn')) {
+
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+              var openDropdown = dropdowns[i];
+              if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+              }
+            }
+          }
+        }
+        
+        function showans1()
+        {
+            var vals = ['x', 'y']; // List of data attributes
+            var xVal = vals[0]; // Value to plot on x-axis
+            var yVal = vals[1]; // Value to plot on y-axis
+
+
+            // set the dimensions and margins of the graph
+            var margin = {top: 20, right: 20, bottom: 30, left:50};
+            var width = 450 - margin.left - margin.right;
+            var height = 350 - margin.top - margin.bottom;
+
+            // set the ranges
+            var x = d3.scaleLinear().range([0,width]);
+            var y = d3.scaleLinear().range([height,0]);
+            
+            d3.select("#menuDisplay").remove();
+            
+            d3.select("#menu").append("div").attr("id","menuDisplay");
+
+
+            // append the svg obgect to the body of the page
+            // appends a 'group' element to 'svg'
+            // moves the 'group' element to the top left margin
+            var svga1 = d3.select("#menuDisplay").append("svg")
+                      .attr("width", width + margin.left + margin.right)
+                      .attr("height", height + margin.top + margin.bottom)
+                      .append("g")
+                      .attr("transform","translate(" + margin.left + "," + margin.top + ")");
+
+            // Get the data
+            d3.csv("data/anscombe_I.csv" , function(error,data)
+            {
+                if(error) throw error;
+                // Scale the range of the data
+                x.domain([3, d3.max(data, function(d){return parseFloat(d[xVal]);})]);  
+                y.domain([3, d3.max(data, function(d){return parseFloat(d[yVal]);})]);
+
+                // Add the scatterplot points
+                svga1.selectAll("circle")
+                    .data(data)
+                    .enter()
+                    .append("circle")
+                    .attr("r",5)
+                    .attr("cx", function(d){ return x(d[xVal]);})
+                    .attr("cy", function(d){ return y(d[yVal]);})
+                    .attr("fill","#F0F");
+
+                // Add the X Axis
+                svga1.append("g")
+                    .attr("transform","translate(0," + height + ")")
+                    .call(d3.axisBottom(x))
+                    .attr("class", "axisWhite");
+                // Add the Y Axis
+                svga1.append("g")
+                    .call(d3.axisLeft(y))
+                    .attr("class", "axisWhite");
+
+                var xLabel = svga1.append("text")
+                                .attr("class","label")
+                                .text(xVal)
+                                .attr("x",width - 20)
+                                .attr("y",height - 10 )
+                                .attr("class", "axisWhite");
+
+                var yLabel = svga1.append("text")
+                                .attr("class","label")
+                                .text(yVal)
+                                .attr("y", - 20 )
+                                .attr("transform","rotate(90)")
+                                .style("text-anchor","start")
+                                .attr("class", "axisWhite");
+
+            });
+        }
+        
+        function showans2()
+        {
+            var vals = ['x', 'y']; // List of data attributes
+            var xVal = vals[0]; // Value to plot on x-axis
+            var yVal = vals[1]; // Value to plot on y-axis
+
+
+            // set the dimensions and margins of the graph
+            var margin = {top: 20, right: 20, bottom: 30, left:50};
+            var width = 450 - margin.left - margin.right;
+            var height = 350 - margin.top - margin.bottom;
+
+            // set the ranges
+            var x = d3.scaleLinear().range([0,width]);
+            var y = d3.scaleLinear().range([height,0]);
+            
+            d3.select("#menuDisplay").remove();
+            
+            d3.select("#menu").append("div").attr("id","menuDisplay");
+
+
+            // append the svg obgect to the body of the page
+            // appends a 'group' element to 'svg'
+            // moves the 'group' element to the top left margin
+            var svga2 = d3.select("#menuDisplay").append("svg")
+                      .attr("width", width + margin.left + margin.right)
+                      .attr("height", height + margin.top + margin.bottom)
+                      .append("g")
+                      .attr("transform","translate(" + margin.left + "," + margin.top + ")");
+
+            // Get the data
+            d3.csv("data/anscombe_II.csv" , function(error,data)
+            {
+                if(error) throw error;
+                // Scale the range of the data
+                x.domain([3, d3.max(data, function(d){return parseFloat(d[xVal]);})]);  
+                y.domain([3, d3.max(data, function(d){return parseFloat(d[yVal]);})]);
+
+                // Add the scatterplot points
+                svga2.selectAll("circle")
+                    .data(data)
+                    .enter()
+                    .append("circle")
+                    .attr("r",5)
+                    .attr("cx", function(d){ return x(d[xVal]);})
+                    .attr("cy", function(d){ return y(d[yVal]);})
+                    .attr("fill","#F0F");
+
+                // Add the X Axis
+                svga2.append("g")
+                    .attr("transform","translate(0," + height + ")")
+                    .call(d3.axisBottom(x))
+                    .attr("class", "axisWhite");
+                // Add the Y Axis
+                svga2.append("g")
+                    .call(d3.axisLeft(y))
+                    .attr("class", "axisWhite");
+
+                var xLabel = svga2.append("text")
+                                .attr("class","label")
+                                .text(xVal)
+                                .attr("x",width - 20)
+                                .attr("y",height - 10 )
+                                .attr("class", "axisWhite");
+
+                var yLabel = svga2.append("text")
+                                .attr("class","label")
+                                .text(yVal)
+                                .attr("y", - 20 )
+                                .attr("transform","rotate(90)")
+                                .style("text-anchor","start")
+                                .attr("class", "axisWhite");
+
+            });
+        }
+        function showans3()
+        {
+            var vals = ['x', 'y']; // List of data attributes
+            var xVal = vals[0]; // Value to plot on x-axis
+            var yVal = vals[1]; // Value to plot on y-axis
+
+
+            // set the dimensions and margins of the graph
+            var margin = {top: 20, right: 20, bottom: 30, left:50};
+            var width = 450 - margin.left - margin.right;
+            var height = 350 - margin.top - margin.bottom;
+
+            // set the ranges
+            var x = d3.scaleLinear().range([0,width]);
+            var y = d3.scaleLinear().range([height,0]);
+            
+            d3.select("#menuDisplay").remove();
+            
+            d3.select("#menu").append("div").attr("id","menuDisplay");
+
+
+            // append the svg obgect to the body of the page
+            // appends a 'group' element to 'svg'
+            // moves the 'group' element to the top left margin
+            var svga3 = d3.select("#menuDisplay").append("svg")
+                      .attr("width", width + margin.left + margin.right)
+                      .attr("height", height + margin.top + margin.bottom)
+                      .append("g")
+                      .attr("transform","translate(" + margin.left + "," + margin.top + ")");
+
+            // Get the data
+            d3.csv("data/anscombe_III.csv" , function(error,data)
+            {
+                if(error) throw error;
+                // Scale the range of the data
+                x.domain([3, d3.max(data, function(d){return parseFloat(d[xVal]);})]);  
+                y.domain([3, d3.max(data, function(d){return parseFloat(d[yVal]);})]);
+
+                // Add the scatterplot points
+                svga3.selectAll("circle")
+                    .data(data)
+                    .enter()
+                    .append("circle")
+                    .attr("r",5)
+                    .attr("cx", function(d){ return x(d[xVal]);})
+                    .attr("cy", function(d){ return y(d[yVal]);})
+                    .attr("fill","#F0F");
+
+                // Add the X Axis
+                svga3.append("g")
+                    .attr("transform","translate(0," + height + ")")
+                    .call(d3.axisBottom(x))
+                    .attr("class", "axisWhite");
+                // Add the Y Axis
+                svga3.append("g")
+                    .call(d3.axisLeft(y))
+                    .attr("class", "axisWhite");
+
+                var xLabel = svga3.append("text")
+                                .attr("class","label")
+                                .text(xVal)
+                                .attr("x",width - 20)
+                                .attr("y",height - 10 )
+                                .attr("class", "axisWhite");
+
+                var yLabel = svga3.append("text")
+                                .attr("class","label")
+                                .text(yVal)
+                                .attr("y", - 20 )
+                                .attr("transform","rotate(90)")
+                                .style("text-anchor","start")
+                                .attr("class", "axisWhite");
+
+            });
+        }
+        
+        function showans4()
+        {
+            var vals = ['x', 'y']; // List of data attributes
+            var xVal = vals[0]; // Value to plot on x-axis
+            var yVal = vals[1]; // Value to plot on y-axis
+
+
+            // set the dimensions and margins of the graph
+            var margin = {top: 20, right: 20, bottom: 30, left:50};
+            var width = 450 - margin.left - margin.right;
+            var height = 350 - margin.top - margin.bottom;
+
+            // set the ranges
+            var x = d3.scaleLinear().range([0,width]);
+            var y = d3.scaleLinear().range([height,0]);
+            
+            d3.select("#menuDisplay").remove();
+            
+            d3.select("#menu").append("div").attr("id","menuDisplay");
+
+            // append the svg obgect to the body of the page
+            // appends a 'group' element to 'svg'
+            // moves the 'group' element to the top left margin
+            var svga4 = d3.select("#menuDisplay").append("svg")
+                      .attr("width", width + margin.left + margin.right)
+                      .attr("height", height + margin.top + margin.bottom)
+                      .append("g")
+                      .attr("transform","translate(" + margin.left + "," + margin.top + ")");
+
+            // Get the data
+            d3.csv("data/anscombe_IV.csv" , function(error,data)
+            {
+                if(error) throw error;
+                // Scale the range of the data
+                x.domain([3, d3.max(data, function(d){return parseFloat(d[xVal]);})]);  
+                y.domain([3, d3.max(data, function(d){return parseFloat(d[yVal]);})]);
+
+                // Add the scatterplot points
+                svga4.selectAll("circle")
+                    .data(data)
+                    .enter()
+                    .append("circle")
+                    .attr("r",5)
+                    .attr("cx", function(d){ return x(d[xVal]);})
+                    .attr("cy", function(d){ return y(d[yVal]);})
+                    .attr("fill","#F0F");
+
+                // Add the X Axis
+                svga4.append("g")
+                    .attr("transform","translate(0," + height + ")")
+                    .call(d3.axisBottom(x))
+                    .attr("class", "axisWhite");
+                // Add the Y Axis
+                svga4.append("g")
+                    .call(d3.axisLeft(y))
+                    .attr("class", "axisWhite");
+
+                var xLabel = svga4.append("text")
+                                .attr("class","label")
+                                .text(xVal)
+                                .attr("x",width - 20)
+                                .attr("y",height - 10 )
+                                .attr("class", "axisWhite");
+
+                var yLabel = svga4.append("text")
+                                .attr("class","label")
+                                .text(yVal)
+                                .attr("y", - 20 )
+                                .attr("transform","rotate(90)")
+                                .style("text-anchor","start")
+                                .attr("class", "axisWhite");
+
+            });
+        }
+        function clear()
+        {
+            d3.select("#menuDisplay").remove();
+            
+            d3.select("#menu").append("div").attr("id","menuDisplay");
+
+        }
+        
+    </script>
+</head>
+
+<body>
+	<div id="partOne">
+        <h1>Part One: </h1>
+	</div>
+    
+    <div id="partTwo" style="display: inline-block">
+        <h1>Part Two: </h1>
+        <div id="barchart">
+        </div>
+	</div>
+    
+    <div id="partThree" style="display: inline-block">
+        <h1>Part Three: </h1>
+        <div id="lineGraph">
+        </div>
+	</div>
+    
+    <div id="partFour">
+        <h1>Part Four: </h1>
+        <div id="scatterplot">
+        </div>
+        <p id="scatterLabel" align="right"><br/></p>
+        <br/>
+        <br/>
+	</div>
+    
+    <div id="partFive">
+        <h1>Part Five: </h1>
+        <div id="scatterplotSet">
+            <div>
+                <div id = "anscombe1" style = "display: inline-block">
+                    <h3>Anscombe I</h3>
+                </div>
+                <div id = "anscombe2" style = "display: inline-block">
+                    <h3>Anscombe II</h3>
+                </div>
+            </div>
+            <div>
+                <div id = "anscombe3" style = "display: inline-block">
+                    <br/>
+                    <h3>Anscombe III</h3>
+                </div>
+                <div id = "anscombe4" style = "display: inline-block">
+                    <br/>
+                    <h3>Anscombe IV</h3>
+                </div>
+            </div>
+        </div>
+	</div>
+    <div id="partSix">
+        <br/><br/><br/><br/><br/><br/>
+        <h1>Part Six: </h1>
+        <div id="menu" class="dropdown">
+            <button onclick="showOptions()" class="btn">Menu</button>
+            <div id="dropdown" class="dropdown-content">
+                <a href="javascript:showans1();">Anscombe 1</a>
+                <a href="javascript:showans2();">Anscombe 2</a>
+                <a href="javascript:showans3();">Anscombe 3</a>
+                <a href="javascript:showans4();">Anscombe 4</a>
+                <a href="javascript:clear();">Clear</a>
+            </div>
+            <div id="menuDisplay">
+            </div>
+        </div>
+    </div>
+    <div id="partSeven">
+        <h1>Part Seven: </h1>
+        <div id="barchartvertBell" style="display:inline-block">  
+        </div>
+        <div id="barcharthorBell" style="display:inline-block">  
+        </div>
+	</div>
+    
+    
+    <script type="text/javascript" src="project1.js"></script>
+</body>
+
+
+</html>
