@@ -21,7 +21,7 @@ I used an online resource for the basics on calculating the best fit line. The l
 I have added a drop down menu to choose different datasets. The plot changes as you choose different datasets. 
 
 <h3>Whistle: Replication</h3>
-replicated using tableau. The image is named ASNCOMBE quartets.jpeg 
+replicated using tableau. The image is named AnscombeQuartets.jpeg 
 
 <h3>References</h3>
 
