@@ -1,7 +1,7 @@
 <h1>Project 1: Visualizing Anscombe’s Quartet</h1>
 
 Since the css did not work through the link tag, I added all the css to the head of the html.
-I have created a separate file for the d3 javascript content except for the javascript related to the menu for the whistle:transitions.
+I have created a separate file for the d3 javascript content except for the javascript related to the menu for the whistle:transitions. Implemented the first 5 parts as asked by creating a separate div for each part so that there is clarity.
 
 <h2>Bells & Whistles: </h2>
 
