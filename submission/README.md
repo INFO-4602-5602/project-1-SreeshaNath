@@ -6,10 +6,10 @@ I have created a separate file for the d3 javascript content except for the java
 <h2>Bells & Whistles: </h2>
 
 <h3>Bell: Tooltips</h3>
-Implemented with part 2 
+Implemented with part 2. Added a tooltip with a background and rounded the edges of the tooltip as a part of stlying the visualization. 
 
 <h3>Bell: Xs and Ys</h3>
-For your bar chart code, create a pair of bar charts for the active dataset: one coding the x-value and one coding the y-value of the current dataset. You can only receive credit for one of this and the “Coordinated Views” whistle. 
+Created side by side bar charts for the dataset.
 
 <h3>Bell: Styling your Visualization</h3>
 I decided to go with a "blackboard&chalk" theme. To do so, added a blackboard image for a background. Changed the color of the axes to white and added colors to the plots.
@@ -22,6 +22,9 @@ I have added a drop down menu to choose different datasets. The plot changes as 
 
 <h3>Whistle: Replication</h3>
 replicated using tableau. The image is named AnscombeQuartets.jpeg 
+
+<h3>Whistle: Coordinated Views</h3>
+The side by side bar charts created in Bell: Xs and Ys are linked to highlight the corresponding bars in both the plot when you hover over the bars.
 
 <h3>References</h3>
 
